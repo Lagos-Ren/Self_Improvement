@@ -3,7 +3,9 @@
 
 int main() {
 	int a;
-	scanf("%d", &a);
-	printf("Hello, World!%d\n",a);
+//	scanf("%d", &a);
+//	printf("Hello, World!%d\n",a);
+	printf("%d\n",sizeof(char)); 
+	printf("%d\n",sizeof(char*));
 	return 0;
 }
