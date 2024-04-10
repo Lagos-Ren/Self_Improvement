@@ -27,6 +27,7 @@ bool IsEmpty(LinkList& L) {//判断单链表是否为空
 }
 
 bool NHInitList(LinkList& L);
+bool NHListInsert(LinkList& L, int i, int e);
 void Nohead();
 
 bool InitList(LinkList& L) {//带头结点的初始化（绝大多数情况下）
@@ -36,6 +37,48 @@ bool InitList(LinkList& L) {//带头结点的初始化（绝大多数情况下）
 	return true;//分配成功，返回值为true
 }
 
+bool ListInsert(LinkList& L, int i, int e) {//按位插入，在第i个位置插入元素e（带头结点）
+	if (i < 1)return false;//排除不合法的i
+	LNode* p;//临时指针
+	int j = 0;//表示p指向第j个结点
+	p = L;//p初始状态和头结点指向同一位置，可视作第0个结点（不存数据）
+	while (p != NULL && j < i - 1) {//循环找到第i-1个结点
+		p = p->next;
+		++j;
+	}
+//	上面的while等价于：（自己瞎写的）
+//	LNode* p = L;
+//	for (int j = 0; p != NULL && j < i - 1; p = p->next, ++j);
+//	后面一段可以直接等价于下面一行代码：（当然要先声明后插函数）
+//	return InsertNextNode(p,e);
+	if (p == NULL)return false;//i值不合法
+	LNode* s = (LNode*)malloc(sizeof(LNode));//申请一个新结点
+	s->data = e;//插值
+	s->next = p->next;//将p结点的下一个指向传给s
+	p->next = s;//然后将p指向s，完成s的插入
+	return true;
+}
+
+bool InsertNextNode(LNode* p, int e) {//对给定结点进行后插操作（在后面插入一个数据）
+	if (p == NULL)return false;//判断节点是否合法
+	LNode* s = (LNode*)malloc(sizeof(LNode));
+	if (s == NULL)return false;//内存分配失败
+	s->data = e;//基本逻辑同按位插入
+	s->next = p->next;
+	p->next = s;
+	return true;
+}
+
+bool InsertPriorNode(LNode* p, int e) {//对给定结点进行前插操作（在前面插入一个数据）
+	if (p == NULL)return false;
+	LNode* s = (LNode*)malloc(sizeof(LNode));
+	if (s == NULL)return false;
+	s->next = p->next;//将s的后继指向p的后继
+	p->next = s;//p指向s，完成将s插入链表
+	s->data = p->data;//将p的数据赋给s
+	p->data = e;//再把需要插入的值e赋给p，从而完成变相的“前插”
+	return true;
+}
 
 int main() {
 	LinkList L;//声明头指针（指向单链表第一个结点的指针），等价于LNode *L;
@@ -49,7 +92,20 @@ bool NHInitList(LinkList& L) {//初始化单链表（不带头结点）
 	return true;
 }
 
+bool NHListInsert(LinkList& L, int i, int e) {//不带头结点的按位插入
+	if (i < 1)return false;
+	if (i == 1) {//需要单独为第1位序的结点开辟一个逻辑，比较麻烦
+		LNode* s = (LNode*)malloc(sizeof(LNode));//申请新节点
+		s->data = e;//赋值
+		s->next = L;//新节点后接原表L
+		L = s;//头结点变为s
+		return true;
+	}
+	else return ListInsert(L, i-1, e);//其他位置的插入同带头结点
+}
+
 void Nohead() {//不带头结点的单链表
+	//不带头结点，L.data中存放数据；带头结点，L.data中不存数据，即可视为第0个节点
 	LinkList L;//声明一个指向单链表的指针
 	NHInitList(L);//初始化一个空表
 	//……然后进行后续操作
