@@ -80,9 +80,36 @@ bool InsertPriorNode(LNode* p, int e) {//¶Ô¸ø¶¨½áµã½øĞĞÇ°²å²Ù×÷£¨ÔÚÇ°Ãæ²åÈëÒ»¸öÊ
 	return true;
 }
 
+bool ListDelete(LinkList& L, int i, int& e) {//°´Î»É¾³ı£ºÉ¾³ıµÚiÎ»ĞòµÄÔªËØ£¬²¢ÓÃe·µ»ØÆäÖµ
+	if (i < 1)return false;
+	LNode* p = L;
+	for (int j = 0; p != NULL && j < i - 1; p = p->next, ++j);//Ñ­»·²éÕÒµÚi-1¸ö½áµã£¬Âß¼­Í¬°´Î»²åÈë
+	if (p == NULL || p->next == NULL)return false;//ÈôµÚi-1¸ö½áµãºóÎŞ½áµãÒ²·Ç·¨£¨¼´²»´æÔÚi½áµã£©
+	LNode* q = p->next;//ÁîqÖ¸Ïò±»É¾³ı½áµã
+	e = q->data;//ÓÃe·µ»Ø±»É¾³ıµÄÖµ
+	p->next = q->next;//ÓÃpµÄºó¼Ì¼Ì³ĞqµÄºó¼Ì£¬´Ó¶ø½«q´ÓÁ´±íÖĞ¶Ï¿ª
+	free(q);//ÊÍ·ÅÄÚ´æ¿Õ¼ä£¬Íê³ÉÉ¾³ı²Ù×÷
+	return true;
+}
+
+bool DeleteNode(LNode* p) {//É¾³ıÖ¸¶¨½áµãp
+	if (p == NULL)return false;
+	if (p->next != NULL) {//Èç¹ûp²»ÊÇ±íÎ²½áµã
+		LNode* q = p->next;//ÁîqÖ¸ÏòpµÄºó¼Ì½áµã
+		p->data = q->data;//½«p½áµãµÄÊı¾İÓÃºó¼Ì½áµãµÄÊı¾İ¸²¸Ç
+		p->next = q->next;//ÔÙ½«pµÄºó¼ÌÖ¸ÏòpµÄºó¼ÌµÄºó¼Ì£¬´Ó¶øÊµÏÖq½áµãµÄ¶Ï¿ª
+		free(q);//´ËÊ±pµÄÎ»ÖÃÊµ¼ÊÉÏÒÑ¾­ÊÇq£¬pÒÑ¾­±»É¾£¬ËùÒÔÊÍ·Åq¼´¿É
+	}else free(p);
+	//Èç¹ûpÊÇ±íÎ²½áµãÔòÖ±½ÓÊÍ·Åp
+	//µ«ÊÇµ¥Á´±íµÄÏàÓ¦ĞÅÏ¢Ò²Òª±ä»¯£¬±ÈÈçlen--£¬ÕâÀï¾ÍĞèÒªÊ¹ÓÃÈ«¾Ö±äÁ¿»òÕß½«²ÎÊı´«Èëº¯Êı
+	//¾ßÌåÊµÏÖ¿ÉÄÜ½ÏÎª¸´ÔÓ£¬ÊÓÇé¿ö¶ø¶¨
+	return true;
+}
+
 int main() {
 	LinkList L;//ÉùÃ÷Í·Ö¸Õë£¨Ö¸Ïòµ¥Á´±íµÚÒ»¸ö½áµãµÄÖ¸Õë£©£¬µÈ¼ÛÓÚLNode *L;
 	InitList(L);
+	
 	
 	return 0;
 }
