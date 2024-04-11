@@ -8,8 +8,8 @@ typedef struct LNode {//typedef关键字：重命名关键字，使代码更简洁
 	int data;
 	struct LNode* next;//指针指向下一个节点
 }LNode, *LinkList;//此处等价于typedef struct LNode *LinkList;
-
-LNode* GetElem(LinkList L, int i) {//按位查找
+/*
+LNode* GetElem(LinkList L, int i) {//按位查找（初学版）
 	//LNode*强调这是一个节点，LinkList强调这是一个单链表，需根据实际情况编写代码以增强可读性
 	if (i == 0)return L;//头节点直接返回
 	if (i < 1)return NULL;//若i不合法返回NULL
@@ -21,7 +21,7 @@ LNode* GetElem(LinkList L, int i) {//按位查找
 	}
 	return p;//返回对应位序节点
 }
-
+*/
 bool IsEmpty(LinkList& L) {//判断单链表是否为空
 	return L == NULL ? true : false;
 }
@@ -104,6 +104,59 @@ bool DeleteNode(LNode* p) {//删除指定结点p
 	//但是单链表的相应信息也要变化，比如len--，这里就需要使用全局变量或者将参数传入函数
 	//具体实现可能较为复杂，视情况而定
 	return true;
+}
+
+LNode* GetElem(LinkList L, int i) {//按位查找，返回第i个元素，之前按位插入已经有过实现
+	//可封装入按位插入，按位删除函数
+	if (i < 0)return NULL;
+	LNode* p = L;
+	int j = 0;
+	while (p != NULL && j < i) {
+		p = p->next;
+		++j;
+	}
+	return p;
+}
+
+LNode* LocateElem(LinkList L, int e) {//按值查找，找到数据域为e的结点
+	LNode* p = L->next;
+	for (; p != NULL && p->data != e; p = p->next);
+	return p;//若没找到会返回NULL
+}
+
+int Length(LinkList L) {//求表长
+	int len = 0;
+	for (LNode* p = L; p->next != NULL; p = p->next)
+		len++;
+	return len;
+}
+
+LinkList List_TailInsert(LinkList& L) {//尾插法建立单链表
+	int x;
+	L = (LinkList)malloc(sizeof(LNode));//建立头结点
+	LNode* s, * r = L;//s为临时指针，r为表尾指针
+	while (scanf("%d", &x) != EOF) {//循环输入数据，直到无输入
+		s = (LNode*)malloc(sizeof(LNode));
+		s->data = x;//数据入表
+		r->next = s;//链接元素
+		r = s;//r指向新的表尾
+	}
+	r->next = NULL;//尾结点指针置空（同时预防空表产生野指针）
+	return L;
+}
+
+LinkList List_HeadInsert(LinkList& L) {//头插法建立单链表
+	int x;
+	LNode* s;//临时指针
+	L = (LinkList)malloc(sizeof(LNode));//分配头结点
+	L->next = NULL;//初始为空
+	while (scanf("%d", &x) != EOF) {
+		s = (LNode*)malloc(sizeof(LNode));
+		s->data = x;//传入数据
+		s->next = L->next;//将头结点的后继作为新节点的后继
+		L->next = s;//新节点作为头结点的后继
+	}
+	return L;
 }
 
 int main() {
