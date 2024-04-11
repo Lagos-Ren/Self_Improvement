@@ -1,3 +1,4 @@
+//80分代码，最后两个数据点TLE
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cstdio>
 #include<cstdlib>
