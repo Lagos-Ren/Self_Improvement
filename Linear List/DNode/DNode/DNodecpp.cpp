@@ -23,7 +23,6 @@ bool IsEmpty(DLinkList& L) {//判断双链表是否为空
 DNode* GetElem(DLinkList& L,int e) {//按值查找数据（同单链表）
 	DNode* r = L;
 	for (; r->next != NULL && r->data != e; r = r->next);
-	if (r == NULL)return NULL;
 	else return r;
 }
 
