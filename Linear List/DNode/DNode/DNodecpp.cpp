@@ -20,19 +20,18 @@ bool IsEmpty(DLinkList& L) {//判断双链表是否为空
 	return L->next == NULL ? true : false;
 }
 
-DNode* GetElem(DLinkList& L,int e) {//按值查找数据（同单链表）
+DNode* GetElem(DLinkList& L,int e) {//按值查找数据，返回相应结点（同单链表）
 	DNode* r = L;
 	for (; r->next != NULL && r->data != e; r = r->next);
 	return r;
 }
 
-DNode* FindElem(DLinkList& L, int i) {//按位查找数据（带头结点，同单链表）
+DNode* FindElem(DLinkList& L, int i) {//按位查找数据，返回相应结点（带头结点，同单链表）
 	if (i < 1)return NULL;//判断i是否合法
 	int j = 0;
 	DNode* r = L;
-	for (; r->next != NULL && j < i; r = r->next, ++j);
-	if (r == NULL)return NULL;
-	else return r;
+	for (; r->next != NULL && j < i; r = r->next, ++j);//从表头开始遍历
+	return r;
 }
 
 bool InsertNextDNode(DNode* p, DNode* s) {//将s结点插到p结点之后
