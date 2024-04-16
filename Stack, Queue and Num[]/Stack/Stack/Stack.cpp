@@ -52,10 +52,10 @@ void InitShStack(ShStack& S) {
 //top0=-1时0号栈空，top1=MaxSize时1号栈空
 //共享栈栈满条件：top0+1 == top1
 
-typedef struct Linknode{
+typedef struct Linknode {
 	int data;
 	struct Linknode* next;
-}LiStack;//链栈的定义
+}Linknode, * LiStack;//链栈的定义
 
 int main() {
 
