@@ -46,15 +46,16 @@ typedef struct {
 }ShStack;//定义共享栈
 
 void InitShStack(ShStack& S) {
-	S.top0 = -1, S.top1 = MaxSize;//初始化共享栈两个栈顶指针
+	S.top0 = -1, S.top1 = MaxSize;//初始化共享栈的两个栈顶指针
 	return;
 }
+//top0=-1时0号栈空，top1=MaxSize时1号栈空
 //共享栈栈满条件：top0+1 == top1
 
 typedef struct Linknode{
 	int data;
 	struct Linknode* next;
-}*LiStack;//链栈的定义
+}LiStack;//链栈的定义
 
 int main() {
 
