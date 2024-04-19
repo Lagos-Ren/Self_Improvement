@@ -37,8 +37,11 @@ inline void qwrite(int x){
 }
 
 int main(){
-	
-	
+	string s;
+	ull x;
+	cin>>s;
+	if(s=="push")cin>>x;
+	cout<<s<<" "<<x<<endl;
 	
 	return 0;
 }
