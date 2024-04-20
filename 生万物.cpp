@@ -36,12 +36,17 @@ inline void qwrite(int x){
 	return;
 }
 
+inline ll fac(int n){
+	ll num[20]={0};
+	num[0]=num[1]=1;
+	for(int i=2;i<=n;++i)
+		for(int j=0;j<i;++j)
+			num[i]+=num[j]*num[i-j-1];
+    return num[n];
+}
+
 int main(){
-	string s;
-	ull x;
-	cin>>s;
-	if(s=="push")cin>>x;
-	cout<<s<<" "<<x<<endl;
-	
-	return 0;
+    int n=qread();
+    printf("%lld\n",fac(n));
+    return 0;
 }
