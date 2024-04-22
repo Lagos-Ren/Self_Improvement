@@ -114,6 +114,20 @@ int Index(SString S, SString T) {//查询子串T在主串S中的位置
 	return 0;//若未找到则返回0
 }
 
+int INdex(SString S, SString T) {//朴素模式匹配算法
+	//S为主串，T为模式串，查找T在S中第一次出现的起始位置，若无匹配返回0
+	int i = 1, j = 1;//i为主串的指针，j为模式串指针
+	for (; i <= S.length && j <= T.length; ++i, ++j) {
+		if (S.ch[i] == T.ch[j])continue;//若当前位匹配则继续匹配下一位
+		else {//若不匹配
+			i = i - j + 2;//i指针往后退到起始位置的下一位
+			j = 1;//j指针恢复到模式串第一位
+		}
+	}
+	if (j > T.length)return i - T.length;//如果j大于模式串长度则代表匹配成功，返回i-模式串长度
+	else return 0;//否则匹配失败，返回0
+}//若主串长度为n，模式串长度为m，最坏的时间复杂度为O(nm)
+
 int main() {
 	SString S;
 	InitString(S);
