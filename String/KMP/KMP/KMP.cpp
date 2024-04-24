@@ -11,7 +11,8 @@ typedef struct {//静态数组存储
 	int length;//串长
 }SString;
 int nex[MaxLen] = { 0 };
-/*
+int nextval[MaxLen] = { 0 };
+
 void InitString(SString& S) {//初始化
 	S.length = 0;
 	return;
@@ -70,7 +71,7 @@ int StrCompare(SString S, SString T) {//比较串大小
 			return S.ch[i] - T.ch[i];
 	return S.length - T.length;//长的串值更大
 }
-
+/*
 int Index(SString S, SString T) {//查询子串T在主串S中的位置
 	SString Sub;//临时子串Sub
 	for (int i = 1; i <= S.length - T.length + 1; ++i) {
@@ -99,7 +100,8 @@ int Index_KMP(SString S, SString T) {//KMP算法
 	for (; i <= S.length && j <= T.length; ++i, ++j) {
 		if (j == 0 || S.ch[i] == T.ch[j])continue;
 		//若j为0或当前位匹配成功，则继续匹配
-		else j = nex[j];//否则向右移动模式串
+//		else j = nex[j];//否则向右移动模式串
+		else j = nextval[j];
 	}
 	if (j > T.length)return i - T.length;//匹配成功
 	else return 0;//匹配失败返回0
@@ -127,8 +129,46 @@ void Get_Next(SString S) {//获取next数组
 */	return;
 }
 
+void Get_Val(SString S) {//从预处理的next数组得到nextval数组
+	for (int i = 1; i <= S.length; ++i) {//按位循环处理模式串
+		if (S.ch[i] == S.ch[nex[i]])nextval[i] = nex[nex[i]];
+		//若第i位与第next[i]位字符相同，则nextval[i]直接等于next[i]的next值
+		else nextval[i] = nex[i];//否则nextval[i]的值与next[i]的值一样
+	}
+	return;
+}
+
+void Get_NextVal(SString S) {//直接求nextval数组
+	nextval[1] = 0;//第1位的nextval值一定为0
+	for (int i = 1, j = 0; i < S.length;) {//循环处理模式串，i为nextval数组下标
+		if (j == 0 || S.ch[i] == S.ch[j]) {
+			//若j为0，或者第i位和第j位匹配成功
+			++i, ++j;//继续后移一位i和j
+			if (S.ch[i] != S.ch[j])nextval[i] = j;
+			//若后一位不匹配，则说明匹配到第i位时失配可直接跳到第j位
+			else nextval[i] = nextval[j];
+			//若后一位匹配，则匹配到第i位失配是跳到的位置和第j位失配跳到的位置相同
+		}
+		else j = nextval[j];//匹配失败，j跳到nextval[j]的位置
+	}
+	return;
+}
+
 int main() {
-
-
+	SString S, T;
+	InitString(S), InitString(T);
+	for (int i = 1; i <= 9; ++i) {
+		if (i == 4 || i == 9)S.ch[i] = 'b';
+		else S.ch[i] = 'a';
+	}
+	S.length = 9;
+	T.ch[1] = T.ch[2] = T.ch[3] = T.ch[4] = 'a';
+	T.ch[5] = 'b';
+	T.length = 5;
+	Get_Next(T);
+	Get_NextVal(T);
+	printf("next:%d %d %d %d %d\n", nex[1], nex[2], nex[3], nex[4], nex[5]);
+	printf("nextval:%d %d %d %d %d\n", nextval[1], nextval[2], nextval[3], nextval[4], nextval[5]);
+	printf("KMP=%d\n", Index_KMP(S, T));
 	return 0;
 }
