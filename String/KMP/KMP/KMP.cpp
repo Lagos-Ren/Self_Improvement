@@ -147,7 +147,7 @@ void Get_NextVal(SString S) {//直接求nextval数组
 			if (S.ch[i] != S.ch[j])nextval[i] = j;
 			//若后一位不匹配，则说明匹配到第i位时失配可直接跳到第j位
 			else nextval[i] = nextval[j];
-			//若后一位匹配，则匹配到第i位失配是跳到的位置和第j位失配跳到的位置相同
+			//若后一位匹配，则匹配到第i位失配时跳到的位置和第j位失配跳到的位置相同
 		}
 		else j = nextval[j];//匹配失败，j跳到nextval[j]的位置
 	}
