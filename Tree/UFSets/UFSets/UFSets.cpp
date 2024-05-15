@@ -46,14 +46,13 @@ void Union_(int S[], int Root1, int Root2) {//改进后的“并”操作
 int Find_(int S[], int x) {//改进后的“查”操作
 	int root = x;
 	while (S[root] >= 0)root = S[root];//循环找到根
-	for (int t; x != root; t = S[x], S[x] = root, x = t);//路径压缩
-	/*for循环等价于下面的while循环
-	while (x != root) {
-		int t = S[x];
-		S[x] = root;
-		x = t;
+	while (x != root) {//路径压缩
+		int t = S[x];//t指向x的父结点
+		S[x] = root;//将x直接挂到根结点下
+		x = t;//继续向上
 	}
-	*/
+	//这个while循环也可以等价为下面这个for循环
+	//for (int t; x != root; t = S[x], S[x] = root, x = t);
 	return root;//返回根
 }
 
