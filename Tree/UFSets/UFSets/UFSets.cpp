@@ -7,12 +7,12 @@ using namespace std;
 #define SIZE 100
 int UFSets[SIZE];//集合元素数组（双亲指针数组）
 
-void Init() {//初始化
-	memset(UFSets, -1, sizeof(UFSets));
+void Init(int S[]) {//初始化
+	memset(S, -1, sizeof(S));
 	//数组各元素初值置-1，表示每个单元自成集合，这个memset等价于下面的写法
 	/*
 	for (int i = 0; i < SIZE; ++i)
-		UFSets[i] = -1;
+		S[i] = -1;
 	*/
 	return;
 }
@@ -36,12 +36,25 @@ void Union_(int S[], int Root1, int Root2) {//改进后的“并”操作
 		S[Root1] += S[Root2];//累加集合树的结点总数
 		S[Root2] = Root1;//小树合并到大树
 	}
-	else {
+	else {//Root1结点数更少
 		S[Root2] += S[Root1];
 		S[Root1] = Root2;
 	}
 	return;
+}
 
+int Find_(int S[], int x) {//改进后的“查”操作
+	int root = x;
+	while (S[root] >= 0)root = S[root];//循环找到根
+	for (int t; x != root; t = S[x], S[x] = root, x = t);//路径压缩
+	/*for循环等价于下面的while循环
+	while (x != root) {
+		int t = S[x];
+		S[x] = root;
+		x = t;
+	}
+	*/
+	return root;//返回根
 }
 
 int main() {
