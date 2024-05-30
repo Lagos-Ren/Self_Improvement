@@ -22,16 +22,29 @@ typedef struct ArcNode {//边表结点
 	struct ArcNode* nextarc;//指向下一条边(弧)的指针（对应单链表的*next）
 	//Infotype info;//如果存储的是带权图，则可加入边权值
 }ArcNode;
-
 typedef struct VNode {//顶点表结点
 	VertexType data;//顶点信息
 	ArcNode* firstarc;//指向第一条依附该顶点的边(弧)的指针
 }VNode, AdjList[MaxVertexNum];//一维数组存储各个顶点
-
 typedef struct {
 	AdjList vertices;//邻接表
 	int vexnum, arcnum;//图的顶点数和弧数
 }ALGraph;//ALGraph是以邻接表存储的图类型
+
+typedef struct Arc_Node {//弧结点
+	int tailvex, headvex;//弧尾，弧头编号域
+	struct Arc_Node* tlink, * hlink;//尾链域，头链域
+	//InfoType info;//权值域
+}Arc_Node;
+typedef struct V_Node {//顶点结点
+	Arc_Node* firstin, * firstout;
+	//分别指向以该顶点为弧头/弧尾的第一个弧结点
+	VertexType data;//顶点数据域
+}V_Node, Adj_List[MaxVertexNum];
+typedef struct {
+	Adj_List vertices;//邻接表
+	int vexnum, arcnum;//图的顶点数和弧数
+}CRGraph;//CRGraph是以十字(Cross)链表存储的有向图类型
 
 int main() {
 
