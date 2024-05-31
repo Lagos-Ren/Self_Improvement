@@ -23,7 +23,7 @@ typedef struct {
 typedef struct ArcNode {
 	int adjvex;
 	struct ArcNode* nextarc;
-}ArcNode;
+}ArcNode,* ArcList;
 typedef struct VNode {
 	VertexType data;
 	ArcNode* firstarc;
@@ -38,11 +38,13 @@ int MGraph[MaxMGSize];
 inline void Init(ALGraph &G) {
 	n = vexnum * (vexnum + 1) / 2;
 	memset(MGraph, 0, sizeof(MGraph));
-	ArcNode* h = (ArcNode*)malloc(sizeof(ArcNode));
-	h->adjvex = 0;
-	h->nextarc = NULL;
-	G.vertices->data = 0;
-	G.vertices->firstarc = h;
+	for (int i = 1; i <= vexnum; ++i) {
+		ArcList h = (ArcList)malloc(sizeof(ArcList));
+		h->adjvex = 0;
+		h->nextarc = NULL;
+		G.vertices[i].data = 0;
+		G.vertices[i].firstarc = h;
+	}
 	return;
 }
 
@@ -68,6 +70,71 @@ inline void MG_Print() {
 	return;
 }
 
+inline void AG_Insert(ALGraph& G, int i, int j) {
+	ArcNode* p = (ArcNode*)malloc(sizeof(ArcNode));
+	p->adjvex = j;
+	p->nextarc = NULL;
+	G.vertices[i].data++;
+	ArcNode* head = G.vertices[i].firstarc;
+	ArcNode* tail = G.vertices[i].firstarc->nextarc;
+	if (tail == NULL) {
+		G.vertices[i].firstarc->nextarc = p;
+	}
+	else {
+		while (tail != NULL) {
+			if (tail->adjvex > p->adjvex) {
+				p->nextarc = tail;
+				head->nextarc = p;
+				break;
+			}
+			else {
+				head = head->nextarc;
+				tail = tail->nextarc;
+				continue;
+			}
+		}
+		if (tail == NULL)head->nextarc = p;
+	}
+	ArcNode* q = (ArcNode*)malloc(sizeof(ArcNode));
+	q->adjvex = i;
+	q->nextarc = NULL;
+	G.vertices[j].data++;
+	head = G.vertices[j].firstarc;
+	tail = G.vertices[j].firstarc->nextarc;
+	if (tail == NULL) {
+		G.vertices[j].firstarc->nextarc = q;
+	}
+	else {
+		while (tail != NULL) {
+			if (tail->adjvex > q->adjvex) {
+				q->nextarc = tail;
+				head->nextarc = q;
+				break;
+			}
+			else {
+				head = head->nextarc;
+				tail = tail->nextarc;
+				continue;
+			}
+		}
+		if (tail == NULL)head->nextarc = q;
+	}
+	return;
+}
+
+inline void AG_Print(ALGraph& G) {
+	for (int i = 1; i <= vexnum; ++i) {
+		printf("%d ", G.vertices[i].data);
+		ArcList Arc = G.vertices[i].firstarc->nextarc;
+		while (Arc != NULL) {
+			printf("%d", Arc->adjvex);
+			Arc = Arc->nextarc;
+			if (Arc != NULL)printf(" ");
+		}printf("\n");
+	}
+	return;
+}
+
 int main() {
 	ALGraph Ag;
 	int i, j;
@@ -77,7 +144,9 @@ int main() {
 		scanf("%d %d", &i, &j);
 		if (i > j)swap(i, j);
 		MG_Insert(i, j);
+		AG_Insert(Ag, i, j);
 	}
 	MG_Print();
+	AG_Print(Ag);
 	return 0;
 }
