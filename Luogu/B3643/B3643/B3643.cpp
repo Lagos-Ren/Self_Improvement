@@ -1,3 +1,4 @@
+//30pts(WA)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
@@ -9,7 +10,6 @@ using namespace std;
 
 #define MaxVertexNum 1007
 #define MaxMGSize 500007
-#define INF 0xfffffff
 typedef char VertexType;
 typedef int EdgeType;
 
@@ -32,12 +32,11 @@ typedef struct {
 	AdjList vertices;
 }ALGraph;
 
-int vexnum, arcnum, n;
-int MGraph[MaxMGSize];
+int vexnum, arcnum;
+int MGraph[MaxMGSize] = { 0 };
 
 inline void Init(ALGraph &G) {
-	n = vexnum * (vexnum + 1) / 2;
-	memset(MGraph, 0, sizeof(MGraph));
+//	memset(MGraph, 0, sizeof(MGraph));
 	for (int i = 1; i <= vexnum; ++i) {
 		ArcList h = (ArcList)malloc(sizeof(ArcList));
 		h->adjvex = 0;
@@ -124,6 +123,10 @@ inline void AG_Insert(ALGraph& G, int i, int j) {
 
 inline void AG_Print(ALGraph& G) {
 	for (int i = 1; i <= vexnum; ++i) {
+		if (!G.vertices[i].data) {
+			printf("0\n");
+			continue;
+		}
 		printf("%d ", G.vertices[i].data);
 		ArcList Arc = G.vertices[i].firstarc->nextarc;
 		while (Arc != NULL) {
@@ -142,7 +145,6 @@ int main() {
 	Init(Ag);
 	for (int k = 1; k <= arcnum; ++k) {
 		scanf("%d %d", &i, &j);
-		if (i > j)swap(i, j);
 		MG_Insert(i, j);
 		AG_Insert(Ag, i, j);
 	}
