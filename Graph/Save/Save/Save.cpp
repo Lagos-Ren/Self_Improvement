@@ -46,6 +46,22 @@ typedef struct {
 	int vexnum, arcnum;//图的顶点数和弧数
 }CRGraph;//CRGraph是以十字(Cross)链表存储的有向图类型
 
+typedef struct Arc__Node {//边结点
+	int ivex, jvex;//边依附的两个顶点
+	struct Arc__Node* ilink, * jlink;//依附同一i/j顶点的链域
+	//InfoType info;//权值域
+}Arc__Node;
+typedef struct V__Node {//顶点结点
+	Arc__Node* firstedge;//与该顶点相连的第一条边
+	VertexType data;//顶点数据域
+}V__Node, Adj__List[MaxVertexNum];
+typedef struct {
+	Adj__List vertices;//邻接多重表
+	int vexnum, arcnum;//图的顶点数和弧数
+}MutiGraph;//MutiGraph是以邻接多重表存储的无向图类型
+
+
+
 int main() {
 
 	return 0;
