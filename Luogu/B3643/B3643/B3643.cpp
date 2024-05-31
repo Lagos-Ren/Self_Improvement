@@ -1,4 +1,4 @@
-//30pts(WA)
+//AC 100pts
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
@@ -10,10 +10,10 @@ using namespace std;
 
 #define MaxVertexNum 1007
 #define MaxMGSize 500007
-typedef char VertexType;
-typedef int EdgeType;
 
 /*
+typedef char VertexType;
+typedef int EdgeType;
 typedef struct {
 	VertexType Vex[MaxVertexNum];
 	EdgeType Edge[MaxVertexNum][MaxVertexNum];
@@ -25,7 +25,7 @@ typedef struct ArcNode {
 	struct ArcNode* nextarc;
 }ArcNode,* ArcList;
 typedef struct VNode {
-	VertexType data;
+	int data;//已更正data的数据类型
 	ArcNode* firstarc;
 }VNode, AdjList[MaxVertexNum];
 typedef struct {
@@ -61,15 +61,15 @@ inline void MG_Insert(int i, int j) {
 inline void MG_Print() {
 	for (int i = 1; i <= vexnum; ++i) {
 		for (int j = 1; j <= vexnum; ++j) {
-			printf("%d", MGraph[Get_K(i, j)]);
-			if (j != vexnum)printf(" ");
+			cout << MGraph[Get_K(i, j)];
+			if (j != vexnum)cout << " ";
 		}
-		printf("\n");
+		cout << endl;
 	}
 	return;
 }
 
-inline void AG_Insert(ALGraph& G, int i, int j) {
+inline void AG_Insert(ALGraph& G, int i, int j) {//简化了邻接表的插入函数
 	ArcNode* p = (ArcNode*)malloc(sizeof(ArcNode));
 	p->adjvex = j;
 	p->nextarc = NULL;
@@ -94,46 +94,23 @@ inline void AG_Insert(ALGraph& G, int i, int j) {
 		}
 		if (tail == NULL)head->nextarc = p;
 	}
-	ArcNode* q = (ArcNode*)malloc(sizeof(ArcNode));
-	q->adjvex = i;
-	q->nextarc = NULL;
-	G.vertices[j].data++;
-	head = G.vertices[j].firstarc;
-	tail = G.vertices[j].firstarc->nextarc;
-	if (tail == NULL) {
-		G.vertices[j].firstarc->nextarc = q;
-	}
-	else {
-		while (tail != NULL) {
-			if (tail->adjvex > q->adjvex) {
-				q->nextarc = tail;
-				head->nextarc = q;
-				break;
-			}
-			else {
-				head = head->nextarc;
-				tail = tail->nextarc;
-				continue;
-			}
-		}
-		if (tail == NULL)head->nextarc = q;
-	}
 	return;
 }
 
-inline void AG_Print(ALGraph& G) {
+inline void AG_Print(ALGraph& G) {//改用了更简洁的cin，cout流
 	for (int i = 1; i <= vexnum; ++i) {
 		if (!G.vertices[i].data) {
-			printf("0\n");
+			cout << "0" << endl;
 			continue;
 		}
-		printf("%d ", G.vertices[i].data);
-		ArcList Arc = G.vertices[i].firstarc->nextarc;
+		cout << G.vertices[i].data << " ";
+		ArcNode* Arc = G.vertices[i].firstarc->nextarc;
 		while (Arc != NULL) {
-			printf("%d", Arc->adjvex);
+			cout << Arc->adjvex;
 			Arc = Arc->nextarc;
-			if (Arc != NULL)printf(" ");
-		}printf("\n");
+			if (Arc != NULL)cout << " ";
+		}
+		cout << endl;
 	}
 	return;
 }
@@ -141,12 +118,13 @@ inline void AG_Print(ALGraph& G) {
 int main() {
 	ALGraph Ag;
 	int i, j;
-	scanf("%d %d", &vexnum, &arcnum);
+	cin >> vexnum >> arcnum;
 	Init(Ag);
 	for (int k = 1; k <= arcnum; ++k) {
-		scanf("%d %d", &i, &j);
+		cin >> i >> j;
 		MG_Insert(i, j);
 		AG_Insert(Ag, i, j);
+		AG_Insert(Ag, j, i);
 	}
 	MG_Print();
 	AG_Print(Ag);
