@@ -15,7 +15,7 @@ typedef struct ArcNode {
 typedef struct VNode {
 	int data;
 	ArcNode* firstarc;
-}VNode,AdjList[MaxVertexNum];
+}VNode, AdjList[MaxVertexNum];
 typedef struct {
 	AdjList vertices;//ÁÚ½Ó±í´æ´¢Í¼
 	int vexnum, arcnum;
