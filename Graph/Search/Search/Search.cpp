@@ -72,7 +72,8 @@ void BFS(ALGraph& G, LinkQueue& Q, int i) {//广度优先搜索（对连通分量）
 	int v, w;//v记录队首元素，w用于临时记录访问的顶点
 	while (!Q_Is_Empty(Q)) {//当队列不为空时
 		DeQueue(Q, v);//队首元素出队
-		for (ArcNode* p = G.vertices[v].firstarc; p != NULL; p = p->nextarc) {//访问p所有的邻接顶点
+		for (ArcNode* p = G.vertices[v].firstarc; p != NULL; p = p->nextarc) {
+			//访问v所有的邻接顶点
 			w = p->adjvex;
 			if (!Visited[w]) {//若顶点w未被访问过
 				Visit(w);//访问顶点w
@@ -84,6 +85,40 @@ void BFS(ALGraph& G, LinkQueue& Q, int i) {//广度优先搜索（对连通分量）
 	return;
 }
 
+void BFSTraverse(ALGraph& G, LinkQueue& Q) {//对图G进行广度优先遍历
+	for (int i = 1; i <= G.vexnum; ++i) {
+		Visited[i] = false;//访问标记数组初始化
+		G.vertices[i].data = i;//其实这一步没用
+	}
+	InitQueue(Q);//初始化队列
+	for (int i = 1; i <= G.vexnum; ++i)//从1号顶点开始遍历
+		if (!Visited[i])//对每个连通分量调用一次BFS()
+			BFS(G, Q, i);//若顶点v_i未被访问过，则从顶点v_i处开始调用BFS()
+	return;
+}
+
+#define INF 0x7fffffff
+void BFS_MIN_Distance(ALGraph G, LinkQueue& Q, int u) {
+	int d[MaxVertexNum], v;//d[i]表示从u到i结点的最短路径
+	memset(d, INF, sizeof(d));//初始化路径长度为无穷大
+	Visited[u] = true, d[u] = 0;
+	EnQueue(Q, u);
+	while (!Q_Is_Empty(Q)) {//BFS主过程
+		DeQueue(Q, u);//队头出队
+		for (ArcNode* w = G.vertices[u].firstarc; w != NULL; w = w->nextarc) {
+			//遍历u的所有邻接点
+			v = w->adjvex;
+			if (!Visited[v]) {//若未访问
+				Visited[v] = true;//标记访问
+				d[v] = d[u] + 1;//路径长度加1
+				EnQueue(Q, v);//顶点w入队
+			}
+		}
+	}
+	return;
+}
+
+/*
 #define MaxVertexNum 114
 typedef struct {
 	int Vex[MaxVertexNum];
@@ -108,18 +143,7 @@ void BFS_(MGraph& G, LinkQueue& Q, int i) {
 	}
 	return;
 }
-
-void BFSTraverse(ALGraph& G, LinkQueue& Q) {//对图G进行广度优先遍历
-	for (int i = 1; i <= G.vexnum; ++i) {
-		Visited[i] = false;//访问标记数组初始化
-		G.vertices[i].data = i;//其实这一步没用
-	}
-	InitQueue(Q);//初始化队列
-	for (int i = 1; i <= G.vexnum; ++i)//从1号顶点开始遍历
-		if (!Visited[i])//对每个连通分量调用一次BFS()
-			BFS(G, Q, i);//若顶点v_i未被访问过，则从顶点v_i处开始调用BFS()
-	return;
-}
+*/
 
 int main() {
 	ALGraph G;
