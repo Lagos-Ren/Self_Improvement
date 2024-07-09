@@ -54,15 +54,15 @@ inline void AG_Insert(ALGraph& G, int i, int j, int k) {
 }
 
 inline void Dijkstra(ALGraph G) {
-	int u = G.Start, v, w, n = G.vexnum - 1;
+	int u = G.Start, v, w, n = G.vexnum;
 	while (n--) {
 		int minn = INF, minm = 0;
 		for (int i = 1; i <= G.vexnum; ++i) {
 			if (!final[i])
 				if (dist[i] < minn)minn = dist[i], minm = i;
 		}
+		if (minn == INF)break;
 		final[minm] = true;
-//		cout << minn << " " << minm << endl;
 		u = minm;
 		for (ArcNode* p = G.vertices[u].firstarc->nextarc; p != NULL; p = p->nextarc) {
 			v = p->adjvex, w = p->info;
