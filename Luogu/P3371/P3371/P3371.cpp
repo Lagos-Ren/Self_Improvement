@@ -9,11 +9,11 @@
 using namespace std;
 
 #define MaxVertexNum 10007
+#define MaxMGSize 500007
 #define INF 0x7fffffff
 
 typedef struct ArcNode {
-	int adjvex;
-	int info;
+	int adjvex, info;
 	struct ArcNode* nextarc;
 }ArcNode, * ArcList;
 typedef struct VNode {
@@ -57,7 +57,7 @@ inline void Dijkstra(ALGraph G) {
 	int u = G.Start, v, w;
 	while (1) {
 		int minn = INF, minm;
-		for (ArcNode* p = G.vertices[u].firstarc; p != NULL; p = p->nextarc) {
+		for (ArcNode* p = G.vertices[u].firstarc->nextarc; p != NULL; p = p->nextarc) {
 			v = p->adjvex, w = p->info;
 			if (v <= 0)continue;
 			if (!final[v]) {
@@ -77,6 +77,8 @@ inline void Dijkstra(ALGraph G) {
 }
 
 int main() {
+	//	freopen("P3371_2.in", "r", stdin);
+	//	freopen("P3371_2.out", "w", stdout);
 	ALGraph G;
 	cin >> G.vexnum >> G.arcnum >> G.Start;
 	Init(G);
