@@ -1,4 +1,4 @@
-//WA(30pts)
+//WA(60pts)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
@@ -54,23 +54,20 @@ inline void AG_Insert(ALGraph& G, int i, int j, int k) {
 }
 
 inline void Dijkstra(ALGraph G) {
-	int u = G.Start, v, w;
-	while (1) {
-		int minn = INF, minm;
+	int u = G.Start, v, w, n = G.vexnum - 1;
+	while (n--) {
+		int minn = INF, minm = 0;
+		for (int i = 1; i <= G.vexnum; ++i) {
+			if (!final[i])
+				if (dist[i] < minn)minn = dist[i], minm = i;
+		}
+		final[minm] = true;
+//		cout << minn << " " << minm << endl;
+		u = minm;
 		for (ArcNode* p = G.vertices[u].firstarc->nextarc; p != NULL; p = p->nextarc) {
 			v = p->adjvex, w = p->info;
-			if (v <= 0)continue;
-			if (!final[v]) {
-				if (dist[v] > dist[u] + w)
+			if (dist[v] > dist[u] + w)
 					dist[v] = dist[u] + w, path[v] = u;
-				if (minn > dist[v])
-					minn = dist[v], minm = v;
-			}
-		}
-		if (minn == INF)break;
-		if (!final[minm]) {
-			final[minm] = true;
-			u = minm;
 		}
 	}
 	return;
