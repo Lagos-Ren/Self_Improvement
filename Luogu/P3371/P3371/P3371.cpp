@@ -1,4 +1,4 @@
-//WA(60pts)
+//WA(70pts)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
@@ -38,7 +38,6 @@ inline void Init(ALGraph& G) {
 		G.vertices[i].firstarc = h;
 		final[i] = false, dist[i] = INF, path[i] = -1;
 	}
-	final[G.Start] = true, dist[G.Start] = 0;
 	return;
 }
 
@@ -55,6 +54,7 @@ inline void AG_Insert(ALGraph& G, int i, int j, int k) {
 
 inline void Dijkstra(ALGraph G) {
 	int u = G.Start, v, w, n = G.vexnum;
+	final[u] = true, dist[u] = 0;
 	while (n--) {
 		int minn = INF, minm = 0;
 		for (int i = 1; i <= G.vexnum; ++i) {
