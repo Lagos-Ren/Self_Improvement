@@ -1,4 +1,4 @@
-//WA(70pts)
+//AC(100pts)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
@@ -74,8 +74,8 @@ inline void Dijkstra(ALGraph G) {
 }
 
 int main() {
-	//	freopen("P3371_2.in", "r", stdin);
-	//	freopen("P3371_2.out", "w", stdout);
+//	freopen("P3371_4.in", "r", stdin);
+//	freopen("P3371_4.out", "w", stdout);
 	ALGraph G;
 	cin >> G.vexnum >> G.arcnum >> G.Start;
 	Init(G);
@@ -83,7 +83,7 @@ int main() {
 	for (int i = 1; i <= G.arcnum; ++i) {
 		cin >> u >> v >> w;
 		AG_Insert(G, u, v, w);
-		if (u == G.Start)dist[v] = w, path[v] = u;
+		if (u == G.Start)dist[v] = min(dist[v], w), path[v] = u;
 	}
 	Dijkstra(G);
 	for (int i = 1; i <= G.vexnum; ++i) {
