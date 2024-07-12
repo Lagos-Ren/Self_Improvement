@@ -1,3 +1,4 @@
+//RE(40pts)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cmath>
 #include<cstdio>
