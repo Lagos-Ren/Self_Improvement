@@ -70,6 +70,11 @@ inline bool Topologicalsort(ALGraph G) {
 	else return true;//拓扑排序成功
 }
 
+int tim, finishtime[MaxVertexNum];
+bool visited[MaxVertexNum];
+inline void DFSTravere(ALGraph G);
+inline void DFS(ALGraph G, int v);
+
 int main() {
 	ALGraph G;
 	cin >> G.vexnum;
@@ -82,11 +87,45 @@ int main() {
 			indegree[j]++;
 		}
 	}
-	if (!Topologicalsort(G))cout << "No DAG!" << endl;
+/*	if (!Topologicalsort(G))cout << "No DAG!" << endl;
 	else {
 		for (int i = 1; i <= G.vexnum; ++i)
 			cout << print[i] << " ";
 		cout << endl;
 	}
+*/
+	DFSTravere(G);
+	int con = 0;
+	for (int i = 1; i <= G.vexnum; ++i) {
+		int maxn = -1, maxm = 0;
+		for (int j = 1; j <= G.vexnum; ++j)
+			if (finishtime[j] > maxn)
+				maxn = finishtime[j], maxm = j;
+		finishtime[maxm] = -1;
+		print[++con] = maxm;
+	}
+	for (int i = 1; i <= G.vexnum; ++i)
+		cout << print[i] << " ";
+	cout << endl;
 	return 0;
+}
+
+inline void DFSTravere(ALGraph G) {
+	memset(visited, false, sizeof(visited));//初始化
+	memset(finishtime, 0, sizeof(finishtime));
+	tim = 0;
+	for (int i = 1; i <= G.vexnum; ++i)//从第一个顶点开始深搜
+		if (!visited[i])DFS(G, i);
+	return;
+}
+
+inline void DFS(ALGraph G, int v) {
+	visited[v] = true;
+	for (ArcNode* p = G.vertices[v].firstarc->nextarc; p != NULL; p = p->nextarc) {
+		int w = p->adjvex;//依次遍历当前顶点的邻边未访问的顶点
+		if (!visited[w])DFS(G, w);
+	}
+	finishtime[v] = ++tim;//搜索深度越深，tim值越小
+	//如果要输出逆拓扑排序序列，只需把这一行改为输出v即可
+	return;
 }
