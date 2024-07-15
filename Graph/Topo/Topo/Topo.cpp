@@ -7,7 +7,7 @@
 #include<algorithm>
 using namespace std;
 
-#define MaxVertexNum 1007
+#define MaxVertexNum 114
 typedef struct ArcNode {
 	int adjvex;
 	struct ArcNode* nextarc;
@@ -63,15 +63,15 @@ inline bool Topologicalsort(ALGraph G) {
 			if (!v)continue;
 			if (!(--indegree[v]))
 				Sta[++top] = v;//度为0则入栈
-			p->adjvex = 0;
+			p->adjvex = 0;//删除边
 		}
 	}
 	if (count < G.vexnum)return false;//排序失败，图中存在回路
 	else return true;//拓扑排序成功
 }
 
-int tim, finishtime[MaxVertexNum];
-bool visited[MaxVertexNum];
+int tim, finishtime[MaxVertexNum];//计时变量，各顶点用时数组
+bool visited[MaxVertexNum];//访问标记
 inline void DFSTravere(ALGraph G);
 inline void DFS(ALGraph G, int v);
 
