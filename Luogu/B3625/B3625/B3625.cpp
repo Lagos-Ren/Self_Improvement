@@ -104,7 +104,7 @@ int main() {
 		}
 	}
 	BFS(1, 1);
-	flag ? cout << "Yes" << endl : cout << "no" << endl;
+	flag ? cout << "Yes" << endl : cout << "No" << endl;
 	return 0;
 }
 */
