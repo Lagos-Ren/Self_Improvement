@@ -13,6 +13,13 @@ typedef struct {//查找表的数据结构（顺序表）
 }SSTable;
 
 inline int Search_Seq(SSTable ST, ElemType key) {
+	/*
+	//顺序查找写法
+	int i;
+	for (i = 0; i < ST.TableLen && ST.elem[i] != key; ++i);
+	//查找成功，则返回元素下标；查找失败，返回-1
+	return i == ST.TableLen ? -1 : i;
+	*/
 	ST.elem[0] = key;//“哨兵”
 	int i = ST.TableLen;
 	for (; ST.elem[i] != key; --i);//从后往前找
