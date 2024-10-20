@@ -34,6 +34,13 @@ inline int Search__Seq(SSTable L, ElemType key) {//降序排列
 	return -1;//查找失败，返回-1
 }
 
+typedef struct {
+	ElemType maxValue;
+	int left, right;
+}Index;//索引表
+
+ElemType List[114];//顺序表存储实际元素
+
 int main() {
 
 	return 0;
