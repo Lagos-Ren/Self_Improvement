@@ -8,30 +8,7 @@
 #include<algorithm>
 using namespace std;
 
-const int N = 114;
-char cd1[N], cd2[N];
-
-int main() {
-	int len1 = 0, len2 = 0;
-	char ch;
-	while (ch = getchar()) {
-		if (ch == '-')break;
-		if (ch == ' ')continue;
-		cd1[len1++] = ch;
-	}
-	while (ch = getchar()) {
-		if (ch == EOF)break;
-		if (ch == ' ')continue;
-		cd2[len2++] = ch;
-	}
-
-
-	return 0;
-}
-
-/*
-//T2
-struct Node{
+struct Node {
 	string Name;
 	int Line;
 	int First_Place, Count;
@@ -43,7 +20,7 @@ inline bool cmp(Node a, Node b) {
 }
 
 int main() {
-//	freopen("std2.in", "r", stdin);
+//	freopen("std.in", "r", stdin);
 	string str;
 	int li, r = 0;
 	while (cin >> str >> li) {
@@ -65,30 +42,3 @@ int main() {
 		cout << Print[i].Name << " " << Print[i].Line << " " << Print[i].Count << endl;
 	return 0;
 }
-*/
-
-/*
-//T1
-const int N = 30005;
-int n, m, stu[N];
-
-int main() {
-	cin >> n >> m;
-	for (int i = 1; i <= n; ++i)
-		cin >> stu[i];
-	char op;
-	int u, v;
-	while (m--) {
-		cin >> op >> u >> v;
-		if (op == 'Q') {
-			int ma = 0;
-			if (u > v)swap(u, v);
-			for (int i = u; i <= v; ++i)
-				ma = max(ma, stu[i]);
-			cout << ma << endl;
-		}
-		else if (op == 'U')stu[u] = v;
-	}
-	return 0;
-}
-*/
