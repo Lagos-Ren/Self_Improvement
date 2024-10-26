@@ -21,15 +21,56 @@ struct ListNode {
 class Solution {
 public:
 	ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-		vector<int>nums1, nums2;
-		for (; l1; l1 = l1->next)nums1.push_back(l1->val);
-		for (; l2; l2 = l2->next)nums2.push_back(l2->val);
-		int len = max(nums1.size(), nums2.size());
-		vector<int>ans;
-
-
+		int carry = 0;  // 进位
+		ListNode* dummy = new ListNode(0);  // 虚拟头节点，简化代码
+		ListNode* current = dummy;
+		while (l1 != nullptr || l2 != nullptr || carry != 0) {
+			int temp = carry;  // 初始化temp为carry，表示进位
+			if (l1) {
+				temp += l1->val;
+				l1 = l1->next;
+			}
+			if (l2) {
+				temp += l2->val;
+				l2 = l2->next;
+			}
+			carry = temp / 10;  // 计算进位
+			current->next = new ListNode(temp % 10);  // 创建新节点
+			current = current->next;
+		}
+		return dummy->next;  // 返回结果链表，跳过虚拟头节点
 	}
 };
+
+/*
+class Solution {
+public:
+	ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+		vector<int>ans;
+		int temp = 0;
+		bool flag = false;
+		while (l1 || l2) {
+			if (l1)temp += l1->val, l1 = l1->next;
+			if (l2)temp += l2->val, l2 = l2->next;
+			if (flag)temp++, flag = false;
+			if (temp > 9)temp -= 10, flag = true;
+			ans.push_back(temp);
+		}
+		if (flag)ans.push_back(1);
+		ListNode* Ans = (ListNode*)malloc(sizeof(ListNode*));
+		Ans->val = ans[0], Ans->next = NULL;
+		ListNode* p = Ans;
+		for (int i = 1; i < ans.size(); ++i) {
+			ListNode* v = (ListNode*)malloc(sizeof(ListNode*));
+			v->val = ans[i];
+			v->next = NULL;
+			p->next = v;
+			p = v;
+		}
+		return Ans;
+	}
+};
+*/
 
 /*
 class Solution {
