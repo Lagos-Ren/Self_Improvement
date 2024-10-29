@@ -12,27 +12,29 @@ using namespace std;
 class Solution {
 public:
     bool canJump(vector<int>& nums) {
-		int n = nums.size(), Zero_pos = -1;
+		int n = nums.size(), Zero_pos = -1;//记录0的位置
 		for (int i = n - 1; i >= 0; --i) {
 			if (!nums[i]) {
-				Zero_pos = i;
+				Zero_pos = i;//找到第一个0所在位置，退出遍历
 				break;
 			}
 		}
-		if (Zero_pos < 0)return true;
-		else if (!Zero_pos)return n < 2;
-		else {
-			bool flag = false;
+		if (Zero_pos < 0)return true;//如果没有0，一定可以到达终点
+		else if (!Zero_pos)return n < 2;//如果nums[0]=0，则只需判断数组大小是否为1即可
+		else {//否则需要继续处理
+			bool flag = false;//标记
 			for (int i = Zero_pos; i >= 0; --i) {
 				if (Zero_pos == n - 1 && Zero_pos - i <= nums[i])flag = true;
+				//如果0位于终点，则影响不大，只要前面有能到达终点的元素就可以
 				else if (Zero_pos - i < nums[i])flag = true;
+				//否则，如果要越过当前0所在位置，则前面必须有元素的值大于0到它的距离
 				if (!nums[i] && flag)Zero_pos = i, flag = false;
+				//如果这个0已经越过，且又出现0，则更新0位置下标，以及重新把flag置false
 			}
 			return flag;
 		}
     }
 };
-
 
 inline bool CanJump(vector<int>& nums) {
 	int n = nums.size(), Zero_pos = -1;
