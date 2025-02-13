@@ -1,9 +1,11 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include<cstdio>
+#define ll long long
+using namespace std;
 
 int main() {
-	long long a, b;
-	scanf("%ld %ld", &a, &b);
-	printf("%ld\n", a + b);
+	ll a, b;
+	scanf("%lld %lld", &a, &b);
+	printf("%lld\n", a + b);
 	return 0;
 }

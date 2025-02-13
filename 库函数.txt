@@ -1,0 +1,264 @@
+//vector
+vector<int> v1;//无参的构造用的最多
+vector<int> v2(10,1);//用10个1来初始化，就是定长初始化数组
+vector<int> v3(v2.begin()+1,v2.end()-1);//用另一个数组v2的区间去初始化
+vector<vector<int>> array(3, vector<int>(2));  //二维vector初始化
+
+v1.size();  //尺寸，装有的数个数    v1.resize(10,1)  v1.resize(10)  //改变尺寸
+v1.capacity();  //容量，一共有多少空间  v1.reserve(100)  //改变容量
+
+v1.push_back(0);  //向数组尾部加入元素
+v1.pop_back();   //拿出数组尾部元素
+
+vector<int>::iterator it1 = find(v.begin(), v.end(),3);
+auto it2 = find(v.begin(), v.end(), 3);  //find作为操作vector的函数寻找元素
+if (it1 != v.end()){
+	b.erase(it1);  //删除元素
+}
+else{
+	b.insert(it1,100);  //在it1的前面插入元素100
+}
+
+for (vector<int>::iterator it = b.begin(); it != b.end(); it++) {
+	cout << *it << " ";
+}
+for (auto it : b) {
+	cout << it << " ";
+}
+for (int i = 0; i < b.size(); i++) {
+	cout << b[i] << " ";
+}
+
+
+
+
+
+
+
+//map
+map<string, int> a;
+a["ha"] = 5;  //添加元素与修改元素
+a["bh"]++;   //如果曾经没加入，默认值为0
+for (map<string, int>::iterator it = a.begin(); it != a.end(); it++) {  //迭代器遍历map中元素
+	cout << it->first << "\t" << it->second << endl;
+}
+map<string, int>::iterator it = a.find("ha");  //find作为map的成员函数寻找map中元素
+if (it != a.end()) {
+	cout << it->first << "\t" << it->second << endl;
+	a.erase(it);  //删除元素
+}
+
+
+struct mystr {   //比较器写在结构体(类)内部的版本
+	int a;
+	int b;
+	bool operator<(const mystr& x) const
+	{
+		return (this->a < x.a);
+	}
+};
+map<mystr, int> b;
+mystr m1; m1.a = 10; m1.b = 20;
+mystr m2; m2.a = 30; m2.b = 0;
+b[m1] = 100;
+b[m2] = -100;
+for (map<mystr, int>::iterator it = b.begin(); it != b.end(); it++) {
+	cout << it->first.a << " " << it->first.b << "\t" << it->second << endl;
+}
+
+
+struct mystr2 {    //比较器写在结构体(类)外部的版本
+	int a;
+	int b;
+	friend ostream& operator<<(ostream& out, mystr2& x);
+};
+class Cmp {
+public:	
+	bool operator()(const mystr2& _Left, const mystr2& _Right) const
+	{	
+		return (_Left.a < _Right.a);
+	}
+};
+mystr2 m1; m1.a = 10; m1.b = 20;
+mystr2 m2; m2.a = 30; m2.b = 0;
+map<mystr2, int, Cmp>c;
+c[m1] = 100;
+c[m2] = -100;
+for (map<mystr2, int>::iterator it = c.begin(); it != c.end(); it++) {
+	cout << it->first.a << " " << it->first.b << "\t" << it->second << endl;
+}
+
+
+ostream& operator<<(ostream& out, mystr2& x) {  //想要重载<<运算符，必须全局函数以友元的方式
+	out << x.a << " " << x.b << "\t";
+	return out;
+}
+
+
+//list
+list<int> l1(3, 4);
+l1.push_back(1);
+l1.push_front(6);
+l1.insert(l1.begin(), 100);
+l1.insert(l1.end(), 200);
+l1.insert(l1.end(), 3, 300);  //三个300，push_back不可以这样做
+list<int>l2 = { 0,-1 };
+l1.insert(l1.end(), l2.begin(), l2.end());
+l1.insert(l1.begin(), l2.begin(), l2.end());
+//l1.insert(l1.begin() + 3, 100); 不可以这样做,list只能访问头部和尾部
+list<int>::iterator yibai, liangbai, liu;
+for (list<int>::iterator iter = l1.begin(); iter != l1.end(); iter++)
+{
+	cout << *iter << " ";   //0 -1 100 6 4 4 4 1 200 300 300 300 0 -1
+	if (*iter == 100) {
+		yibai = iter;
+	}
+	if (*iter == 200) {
+		liangbai = iter;
+	}
+	if (*iter == 6) {
+		liu = iter;
+	}
+}
+cout << endl;
+for (list<int>::iterator iter = l2.begin(); iter != l2.end(); iter++)
+{
+	cout << *iter << " ";  //0 -1  即l2不改变
+}
+cout << endl;
+l1.pop_back(); l1.pop_front();
+l1.erase(yibai);
+for (list<int>::iterator iter = l1.begin(); iter != l1.end(); iter++)
+{
+	cout << *iter << " ";   //-1 6 4 4 4 1 200 300 300 300 0
+}
+cout << endl;
+l1.splice(l1.begin(), l2);  //将l2插入l1的头部，然后l2为空链表，此时l1为0 -1 -1 6 4 4 4 1 200 300 300 300 0
+l1.splice(l1.begin(), l1, liangbai);  //把l1的liabgbai的迭代器对应的节点插入到l1.begin()
+for (list<int>::iterator iter = l1.begin(); iter != l1.end(); iter++)
+{
+	cout << *iter << " ";   //200 0 - 1 - 1 6 4 4 4 1 300 300 300 0
+}
+cout << endl;
+l1.splice(l1.end(), l1, liangbai, liu);  //把l1的[liabgbai,liu)的迭代器对应的节点插入到l1.end()
+for (list<int>::iterator iter = l1.begin(); iter != l1.end(); iter++)
+{
+	cout << *iter << " ";   //6 4 4 4 1 300 300 300 0 200 0 -1 -1
+}
+
+
+//queue
+queue<int> q;
+q.push(1);
+q.pop();
+q.front();
+q.back();
+q.size();
+q.empty();
+//不可以遍历
+
+
+//deque 双端队列
+deque<int>d;
+d.push_back(1);
+d.push_back(2);
+d.push_back(3);
+d.push_back(4);
+d.push_back(5);
+for (int i = 0; i < d.size(); i++)
+	cout << d[i] << " ";             						//1 2 3 4 5
+cout << endl;
+d.pop_front();
+d.pop_back();
+d.push_front(100);
+d.push_back(200);
+d.resize(10,0);												//不够的位置用0填充，不填参数的话默认为0
+cout << "双端队列的大小" << d.size() << endl;   			//双端队列的大小10
+for (int i = 0; i < d.size(); i++)
+	cout << d[i] << " ";
+cout << endl;    											//100 2 3 4 200 0 0 0 0 0
+cout << d.back() << endl;									//0
+cout << d.front() << endl;									//100
+deque<int>d2;
+cout << d2.empty() << endl;           						//1
+d2.push_back(10);
+d2.push_back(20);
+d2.push_back(30);
+d2.push_back(40);
+d2.push_back(50);
+reverse(d2.begin(), d2.end());  //反转队列
+d.insert(d.end(), d2.begin(), d2.end());  //拼接d2到d1的尾部
+for (int i = 0; i < d.size(); i++)
+	cout << d[i] << " ";
+cout << endl;                                              	//100 2 3 4 200 0 0 0 0 0 50 40 30 20 10
+cout << "双端队列2的大小" << d2.size() << endl;				//双端队列2的大小5
+
+
+
+
+
+
+
+
+
+
+
+
+#include<iostream>
+#include<set>
+#include<unordered_map>
+using namespace std;
+
+struct Students
+{
+public:
+    string id;
+    int age, height;
+    Students(string s, int a, int h) :id(s), age(a), height(h) {}
+    Students() {}
+    bool operator <(const Students& s) const {
+        if (id != s.id) return id < s.id;
+        else return age < s.age;
+    }
+};
+class Cmp {
+public:
+    bool operator()(const Students* _Left, const Students* _Right) const
+    {
+        return (_Left->age < _Right->age);
+    }
+};
+int main() {
+    set<Students*,Cmp> se;
+    Students* a1 = new Students("zhou", 12, 134);
+    Students* a2 = new Students("wu", 1, 42);
+    Students* a3 = new Students("zheng", 34, 43);
+    Students *a4 = new Students("zheng", 34, 43);
+    
+    //set<Students*, Cmp>se;
+    se.insert(a1); se.insert(a2); se.insert(a3); se.insert(a4);
+    for (auto it = se.begin(); it != se.end(); it++) {
+        Students* a = *it;
+        cout << a->id << " " << a->age << " " << a->height << endl;
+    }
+    //if (se.find(a)!=se.end()) {
+    //    cout << "1" << endl;
+    //}
+
+    unordered_map<string, Students*>m;  //看看是否有这样的记录
+    
+    m[a1->id] = a1;
+    m[a2->id] = a2;
+    m[a3->id] = a3;
+    m[a4->id]->age=-1000;
+    for (auto it = m.begin(); it != m.end(); it++) {
+        Students *a = it->second;
+        cout << a->id << " " << a->age << " " << a->height << endl;
+    }
+    cout << ".........." << endl;
+    for (auto it = se.begin(); it != se.end(); it++) {
+        Students* a = *it;
+        cout << a->id << " " << a->age << " " << a->height << endl;
+    }
+    return 0;
+}
